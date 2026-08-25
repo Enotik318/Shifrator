@@ -7,19 +7,16 @@
 html, body {
   height: 100%;
   width: 100%;
-  overflow: hidden;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
   position: relative;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
   background-color: #050505;
+  min-height: 100%;
 }
 
+/* Фоновая картинка */
 .bg-image {
   position: fixed;
   top: 0;
@@ -31,6 +28,7 @@ body {
   pointer-events: none;
 }
 
+/* Виньетка */
 body::after {
   content: '';
   position: fixed;
@@ -40,7 +38,7 @@ body::after {
   z-index: 50;
 }
 
-/* ===== Боковое меню ===== */
+/* ===== Боковое меню (десктоп) ===== */
 .sidebar {
   position: fixed;
   top: 0;
@@ -150,11 +148,12 @@ body::after {
   opacity: 0.85;
 }
 
-/* ===== Основная область ===== */
+/* ===== Основная область (десктоп) ===== */
 .main {
   margin-right: 210px;
   height: 100%;
   position: relative;
+  overflow: hidden;
 }
 
 .content {
@@ -312,114 +311,174 @@ body::after {
   box-shadow: 0 4px 12px rgba(0,0,0,0.4);
 }
 
-@media (max-width: 1024px) {
+/* ========== МОБИЛЬНАЯ ВЕРСИЯ ========== */
+@media (max-width: 768px) {
   html, body {
-    overflow-y: auto !important; /* Разрешаем вертикальную прокрутку, если экран маленький */
-    height: auto !important;
+    height: auto;
+    min-height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
   }
 
   body {
     display: flex;
     flex-direction: column;
-    padding: 10px;
+    padding: 0;
   }
 
-  /* 1. БОКОВАЯ ПАНЕЛЬ ПРЕВРАЩАЕТСЯ В ГОРИЗОНТАЛЬНУЮ ЛЕНТУ СВЕРХУ */
+  /* Сайдбар → горизонтальная полоска сверху */
   .sidebar {
-    position: relative !important;
-    width: 100% !important;
-    height: auto !important;
-    border-left: none !important;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-    padding: 10px !important;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.5) !important;
-    margin-bottom: 20px;
+    position: relative;
+    top: auto;
+    right: auto;
+    width: 100%;
+    height: auto;
+    flex-direction: column;
+    border-left: none;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    padding: 12px 0 10px;
+    order: 1;
   }
 
   .sidebar-header {
-    margin-bottom: 8px !important;
-    padding-bottom: 6px !important;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    font-size: 14px;
   }
 
-  /* Выстраиваем кнопки режимов в один ряд с прокруткой пальцем */
   .mode-list {
-    flex-direction: row !important;
-    overflow-x: auto !important;
-    overflow-y: hidden !important;
-    white-space: nowrap;
-    gap: 8px !important;
-    padding: 4px 5px !important;
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: 8px;
+    padding: 0 12px 4px;
     -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
   }
 
-  /* Скрываем системный скроллбар в меню для красоты */
   .mode-list::-webkit-scrollbar {
     display: none;
   }
 
   .mode-btn {
-    flex: 0 0 auto !important; /* Не даем кнопкам сжиматься */
-    padding: 8px 12px !important;
-    font-size: 13px !important;
+    flex: 0 0 auto;
+    padding: 10px 14px;
+    font-size: 13px;
+    white-space: nowrap;
   }
 
   .mode-btn:hover {
-    transform: none !important; /* Отменяем сдвиг влево на мобилках */
+    transform: none;
   }
 
-  /* 2. СБРАСЫВАЕМ ОТСТУПЫ У ОСНОВНОЙ ОБЛАСТИ */
+  .mode-btn.active::before {
+    width: 100%;
+    height: 3px;
+    top: auto;
+    bottom: 0;
+    left: 0;
+  }
+
+  /* Основной блок */
   .main {
-    margin-right: 0 !important;
-    height: auto !important;
-  }
-
-  /* 3. ОЖИВЛЯЕМ ЦЕНТРАЛЬНЫЙ БЛОК (СБРОС АБСОЛЮТНЫХ КООРДИНАТ) */
-  .content {
-    position: relative !important;
-    top: 0 !important;
-    left: 0 !important;
-    transform: none !important;
-    width: 100% !important;
-    max-width: 520px !important; /* Держим аккуратную ширину */
-    margin: 0 auto 40px auto !important;
-    padding: 0 10px !important;
+    margin-right: 0;
+    height: auto;
+    position: relative;
+    overflow: visible;
+    order: 2;
+    padding: 20px 16px 40px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 18px;
+  }
+
+  /* Контент — обычный поток */
+  .content {
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    width: 100%;
+    max-width: 100%;
   }
 
   .content h1 {
-    font-size: 32px !important; /* Уменьшаем заголовок для мобилок */
+    font-size: 28px;
+    margin-bottom: 6px;
   }
 
   .content p {
-    font-size: 15px !important;
+    font-size: 14px;
+    margin-bottom: 10px;
   }
 
-  /* Переводим поля ввода и кнопки в нормальный блочный поток */
-  .content textarea,
-  #outputText,
+  .params {
+    max-width: 100%;
+  }
+
+  .param-group {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .param-group input {
+    width: 120px;
+  }
+
+  .content textarea {
+    max-width: 100%;
+    width: 100%;
+    height: 100px;
+    margin-top: 12px;
+    font-size: 15px;
+  }
+
+  /* Кнопки */
   .btn-group {
-    position: relative !important;
-    top: 0 !important;
-    left: 0 !important;
-    transform: none !important;
-    margin-top: 15px !important;
-    width: 100% !important;
-  }
-
-  #outputText {
-    cursor: text !important; /* На мобилках удобнее выделять текст */
-  }
-
-  /* Кнопки встают друг под другом, так удобнее тапать */
-  .btn-group {
-    flex-direction: column !important;
-    gap: 10px !important;
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    max-width: 100%;
+    width: 100%;
+    flex-direction: column;
+    gap: 12px;
   }
 
   .btn {
-    width: 100% !important;
-    padding: 12px !important;
+    width: 100%;
+    padding: 14px 20px;
+    font-size: 15px;
+    letter-spacing: 1px;
+  }
+
+  .btn:hover {
+    transform: none;
+  }
+
+  /* Вывод */
+  #outputText {
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    max-width: 100%;
+    width: 100%;
+    height: 100px;
+    margin-top: 0;
+  }
+}
+
+/* Очень узкие экраны */
+@media (max-width: 380px) {
+  .content h1 {
+    font-size: 24px;
+  }
+
+  .mode-btn {
+    padding: 8px 12px;
+    font-size: 12px;
   }
 }
