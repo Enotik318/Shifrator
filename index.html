@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TESTORATOR3000</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Боковое меню режимов -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <span class="logo-icon">⬡</span>
+      РЕЖИМЫ
+    </div>
+    <nav class="mode-list">
+      <button class="mode-btn active" data-mode="base64">
+        <span class="mode-icon">▣</span> Base64
+      </button>
+      <button class="mode-btn" data-mode="caesar">
+        <span class="mode-icon">↻</span> Цезарь
+      </button>
+      <button class="mode-btn" data-mode="rot13">
+        <span class="mode-icon">⇄</span> ROT13
+      </button>
+      <button class="mode-btn" data-mode="vigenere">
+        <span class="mode-icon">🔑</span> Виженер
+      </button>
+      <button class="mode-btn" data-mode="atbash">
+        <span class="mode-icon">⇔</span> Атбаш
+      </button>
+      <button class="mode-btn" data-mode="reverse">
+        <span class="mode-icon">↔</span> Реверс
+      </button>
+      <button class="mode-btn" data-mode="xor">
+        <span class="mode-icon">⊕</span> XOR
+      </button>
+      <button class="mode-btn" data-mode="hex">
+        <span class="mode-icon">#</span> HEX
+      </button>
+      <button class="mode-btn" data-mode="binary">
+        <span class="mode-icon">01</span> Binary
+      </button>
+      <button class="mode-btn" data-mode="morse">
+        <span class="mode-icon">•−</span> Морзе
+      </button>
+      <button class="mode-btn" data-mode="a1z26">
+        <span class="mode-icon">A1</span> A1Z26
+      </button>
+    </nav>
+  </aside>
+
+  <div class="main">
+    <div class="content">
+      <h1>SHIFRATOR</h1>
+      <p id="modeDescription">Кодирование / декодирование Base64</p>
+
+      <div id="params" class="params">
+        <div class="param-group" id="caesarParams" style="display:none;">
+          <label for="caesarShift">Сдвиг:</label>
+          <input type="number" id="caesarShift" value="3" min="1" max="32">
+        </div>
+        <div class="param-group" id="keyParams" style="display:none;">
+          <label for="cipherKey">Ключ:</label>
+          <input type="text" id="cipherKey" placeholder="Введите ключ..." value="secret">
+        </div>
+      </div>
+
+      <textarea id="inputText" placeholder="Введите текст..."></textarea>
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-encrypt" onclick="processText(true)">Зашифровать</button>
+      <button class="btn btn-decrypt" onclick="processText(false)">Расшифровать</button>
+    </div>
+
+    <textarea id="outputText" placeholder="Результат появится здесь..." readonly></textarea>
+  </div>
+
+  <script src="./script.js"></script>
+</body>
+</html>
